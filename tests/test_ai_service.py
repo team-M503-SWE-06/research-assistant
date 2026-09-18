@@ -9,7 +9,7 @@ import pytest
 
 from ai.providers.base import ProviderError
 from researcher.services import ai_service as ai_service_module
-from researcher.services.ai_service import AIService
+from researcher.services.ai_service import _RETRYABLE_EXCEPTIONS, AIService
 from researcher.services.search_terms import wikipedia_search_candidates
 
 # The candidate list itself is search_terms' business and is tested in
@@ -21,14 +21,35 @@ CANDIDATES = wikipedia_search_candidates(QUESTION)
 MATCHING_TERM = "photosynthesis"
 
 
+# Every exception type the retry policy is meant to treat as transient. The
+# concrete httpx subclasses are included alongside the base classes named in
+# _RETRYABLE_EXCEPTIONS because those are what a real transport actually raises.
+RETRYABLE_CASES = [
+    ProviderError,
+    httpx.HTTPError,
+    httpx.TimeoutException,
+    httpx.ConnectError,
+    httpx.ReadTimeout,
+]
+
+
+def test_retryable_cases_cover_every_declared_exception_type():
+    """Adding a type to _RETRYABLE_EXCEPTIONS without a retry case fails here."""
+    assert set(_RETRYABLE_EXCEPTIONS) <= set(RETRYABLE_CASES)
+
+
+@pytest.mark.parametrize("exc_type", RETRYABLE_CASES)
 @pytest.mark.asyncio
-async def test_fetch_wikipedia_retries_then_succeeds(monkeypatch, settings_factory, sample_sources):
+async def test_fetch_wikipedia_retries_then_succeeds(
+    monkeypatch, settings_factory, sample_sources, exc_type
+):
+    """Each retryable failure is retried once and then the call succeeds."""
     calls = {"n": 0}
 
     async def flaky(query, *, max_results=3, client=None):
         calls["n"] += 1
         if calls["n"] < 2:
-            raise ProviderError("transient failure")
+            raise exc_type("transient failure")
         return sample_sources
 
     monkeypatch.setattr(ai_service_module.ai_sources, "fetch_wikipedia", flaky)
@@ -56,26 +77,6 @@ async def test_fetch_wikipedia_raises_after_exhausting_retries(monkeypatch, sett
     # "q" yields a single candidate, so every call here is a retry of the same
     # term. Asserting the count is what distinguishes giving up after the
     # configured number of attempts from never retrying at all.
-    assert calls["n"] == 2
-
-
-@pytest.mark.asyncio
-async def test_fetch_wikipedia_retries_on_httpx_error(monkeypatch, settings_factory, sample_sources):
-    """The retry policy covers transport failures, not only ProviderError."""
-    calls = {"n": 0}
-
-    async def flaky(query, *, max_results=3, client=None):
-        calls["n"] += 1
-        if calls["n"] < 2:
-            raise httpx.ConnectError("connection refused")
-        return sample_sources
-
-    monkeypatch.setattr(ai_service_module.ai_sources, "fetch_wikipedia", flaky)
-    service = AIService(settings_factory(retry_max_attempts=3, retry_backoff_seconds=0.001))
-
-    result = await service.fetch_wikipedia("q", max_results=3)
-
-    assert result == sample_sources
     assert calls["n"] == 2
 
 
