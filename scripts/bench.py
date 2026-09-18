@@ -48,7 +48,8 @@ def render_table(n: int, sequential: float, concurrent: float) -> str:
     return (
         "| Workload | N | Sequential | Concurrent | Speedup |\n"
         "|---|---|---|---|---|\n"
-        f"| 5 sample research questions | {n} | {sequential:.1f}s | {concurrent:.1f}s | {speedup:.1f}x |"
+        f"| 5 sample research questions | {n} | {sequential:.1f}s "
+        f"| {concurrent:.1f}s | {speedup:.1f}x |"
     )
 
 

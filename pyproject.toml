@@ -1,0 +1,36 @@
+# Tooling configuration only. The project is run as a package from the repo root
+# (see pytest.ini's `pythonpath = .`), not installed, so there is no build backend.
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+
+# The ai/ package, demo_ai.py and tests/test_ai_smoke.py are course-provided and
+# must not be modified (see TOPIC.md, "The contract"). Linting them would fail CI
+# on code we are not allowed to fix, so they are excluded. tests/conftest.py is
+# provided too; our own fixtures are appended to it.
+extend-exclude = [
+    "ai",
+    "demo_ai.py",
+    "tests/test_ai_smoke.py",
+    "tests/conftest.py",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+# SIM905 wants the stopword block in services/search_terms.py rewritten as a
+# 60-element list literal. The triple-quoted, line-wrapped form is easier to read
+# and to amend, so the rule is off rather than the code being made worse to suit it.
+ignore = ["SIM905"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+exclude = '^(ai/|demo_ai\.py$)'
+
+# The provided ai/ package is type-checked by its authors, not by us; follow its
+# imports for inference but do not report errors inside it.
+[[tool.mypy.overrides]]
+module = "ai.*"
+follow_imports = "silent"

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import asyncio
 
-from researcher.config import Settings
 from researcher.concurrency.orchestrator import ResearchOrchestrator
+from researcher.config import Settings
 from researcher.core.errors import NoSourcesAvailableError
 from researcher.core.validation import ALL_ORIGINS, validate_question
 from researcher.models import ResearchSession
@@ -22,7 +22,7 @@ class Researcher:
         self._ai = ai_service
         self._settings = settings
 
-    async def __aenter__(self) -> "Researcher":
+    async def __aenter__(self) -> Researcher:
         return self
 
     async def __aexit__(self, *exc_info: object) -> None:

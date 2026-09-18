@@ -12,11 +12,11 @@ import time
 
 import httpx
 
+from ai.schemas import Source
 from researcher.config import Settings
 from researcher.models import SourceOutcome
 from researcher.services.ai_service import AIService
 from researcher.services.cache import SourceCache
-from ai.schemas import Source
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +74,7 @@ class ResearchOrchestrator:
             follow_redirects=True,
         )
 
-    async def __aenter__(self) -> "ResearchOrchestrator":
+    async def __aenter__(self) -> ResearchOrchestrator:
         return self
 
     async def __aexit__(self, *exc_info: object) -> None:
@@ -94,7 +94,7 @@ class ResearchOrchestrator:
 
         outcomes: list[SourceOutcome] = []
         all_sources: list[Source] = []
-        for origin, result in zip(requested, results):
+        for origin, result in zip(requested, results, strict=True):
             if isinstance(result, BaseException):
                 outcomes.append(
                     SourceOutcome(
@@ -144,4 +144,7 @@ class ResearchOrchestrator:
         elapsed = time.perf_counter() - start
         if use_cache:
             await self._cache.set(origin, question, sources)
-        return SourceOutcome(origin=origin, source_count=len(sources), elapsed_seconds=elapsed), sources
+        outcome = SourceOutcome(
+            origin=origin, source_count=len(sources), elapsed_seconds=elapsed
+        )
+        return outcome, sources
