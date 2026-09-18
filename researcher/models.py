@@ -2,11 +2,32 @@
 
 from __future__ import annotations
 
+import time
 from datetime import UTC, datetime
 
 from pydantic import BaseModel, Field
 
-from ai.schemas import AnswerWithCitations
+from ai.schemas import AnswerWithCitations, Source
+
+
+class CacheEntry(BaseModel):
+    """One cached `(source, query)` result, as stored by `SourceCache`.
+
+    Typed rather than a bare dict so the cache's on-disk shape is declared in
+    one place: a renamed field breaks here, not silently at a string-keyed
+    lookup in whichever module happens to read it next.
+    """
+
+    source: str
+    query: str
+    cached_at: float
+    expires_at: float
+    sources: list[Source]
+
+    @property
+    def is_expired(self) -> bool:
+        """True once `expires_at` has passed. Expiry is lazy, checked on read."""
+        return time.time() > self.expires_at
 
 
 class SourceOutcome(BaseModel):
