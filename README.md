@@ -187,6 +187,9 @@ pytest --cov=researcher --cov-report=term-missing
 │   └── bench.py                  # sequential-vs-concurrent benchmark
 ├── tests/                        # provided smoke tests + our offline test suite
 ├── data/                          # sample research questions
+├── artefacts/                    # captured output of one full live run
+├── report/report.tex             # the report source; compiles to report/report.pdf
+├── slides/                       # the defence deck, .tex and compiled .pdf
 ├── .github/workflows/ci.yml      # lint, type check, tests + coverage gate, docker build
 ├── Dockerfile
 ├── .dockerignore

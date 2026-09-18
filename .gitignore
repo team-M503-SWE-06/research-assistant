@@ -29,3 +29,15 @@ htmlcov/
 
 # Output directories
 out/
+
+# LaTeX build artefacts, from compiling report/ and slides/ in place.
+# *.log is already covered above.
+*.aux
+*.out
+*.toc
+*.nav
+*.snm
+*.vrb
+*.fls
+*.fdb_latexmk
+*.synctex.gz
