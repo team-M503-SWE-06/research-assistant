@@ -1,0 +1,23 @@
+2026-09-18 23:16:19,097 INFO     researcher.services.ai_service: fetch origin=arxiv query='How does CRISPR-Cas9 gene editing work?' results=3 elapsed=0.369s
+2026-09-18 23:16:19,399 INFO     researcher.services.ai_service: fetch origin=wikipedia query='CRISPR-Cas9 gene editing' results=1 elapsed=0.692s
+2026-09-18 23:16:19,399 INFO     researcher.services.ai_service: wikipedia match question='How does CRISPR-Cas9 gene editing work?' term='CRISPR-Cas9 gene editing' attempt=1/6
+2026-09-18 23:16:20,392 INFO     researcher.services.ai_service: fetch origin=web query='How does CRISPR-Cas9 gene editing work?' results=3 elapsed=1.663s
+2026-09-18 23:16:26,571 INFO     httpx2: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-09-18 23:16:26,583 INFO     researcher.services.ai_service: synthesize question='How does CRISPR-Cas9 gene editing work?' n_sources=7 elapsed=6.190s
+Q: How does CRISPR-Cas9 gene editing work?
+
+A: CRISPR-Cas9 is derived from a natural bacterial immune defense system, in which bacteria capture fragments of viral DNA and store them as CRISPR arrays, later producing RNA segments that recognize and target invading viruses if they attack again [7]. In laboratory use, this system is simplified into a genome editing tool by combining the Cas9 nuclease with a synthetic guide RNA (gRNA) that is designed to match a specific DNA sequence [1,5]. The guide RNA directs Cas9 to the targeted location in the genome, where the enzyme cleaves both strands of the DNA [5,6]. Once the DNA is cut, the cell’s natural repair mechanisms take over, either rejoining the ends in a way that introduces insertions or deletions (often disrupting the gene) or allowing researchers to add, remove, or replace specific sequences [5,6]. A single guide RNA can be used to create one cut leading to gene inactivation, while more advanced approaches, such as using homology-directed repair (HDR) donor templates, allow precise insertion of new genetic material, such as tags for studying protein function, though this method's efficiency is often limited by low knock-in rates [2,6].
+
+References:
+  [1] (wikipedia) CRISPR gene editing
+      https://en.wikipedia.org/wiki/CRISPR_gene_editing
+  [2] (arxiv) Fast Antibiotic resistance-Based gene editing of mammalian cells with CRISPR-Cas9 (FAB-CRISPR)
+      http://arxiv.org/abs/2502.12675v1
+  [5] (web) What is CRISPR-Cas9 and how does it work? - INTEGRA Biosciences
+      https://www.integra-biosciences.com/united-states/en/blog/article/what-crispr-cas9-and-how-does-it-work
+  [6] (web) Gene Editing
+      https://crisprtx.com/gene-editing
+  [7] (web) What are genome editing and CRISPR-Cas9?: MedlinePlus Genetics
+      https://medlineplus.gov/genetics/understanding/genomicresearch/genomeediting
+
+(timing: wikipedia=0.69s, arxiv=0.37s, web=1.66s; * = cache hit)

@@ -1,0 +1,57 @@
+# Cache behaviour
+
+The same question asked twice. The first run populates the source cache;
+the second reads it. A '*' beside a timing marks a cache hit.
+
+## Run 1 -- cold cache
+```
+2026-09-18 23:17:08,916 INFO     researcher.services.ai_service: fetch origin=arxiv query='How does CRISPR-Cas9 gene editing work?' results=3 elapsed=0.376s
+2026-09-18 23:17:08,945 INFO     researcher.services.ai_service: fetch origin=wikipedia query='CRISPR-Cas9 gene editing' results=1 elapsed=0.428s
+2026-09-18 23:17:08,945 INFO     researcher.services.ai_service: wikipedia match question='How does CRISPR-Cas9 gene editing work?' term='CRISPR-Cas9 gene editing' attempt=1/6
+2026-09-18 23:17:12,379 INFO     researcher.services.ai_service: fetch origin=web query='How does CRISPR-Cas9 gene editing work?' results=3 elapsed=3.839s
+2026-09-18 23:17:20,135 INFO     httpx2: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-09-18 23:17:20,234 INFO     researcher.services.ai_service: synthesize question='How does CRISPR-Cas9 gene editing work?' n_sources=7 elapsed=7.850s
+Q: How does CRISPR-Cas9 gene editing work?
+
+A: CRISPR-Cas9 is derived from a bacterial antiviral defense system that has been adapted into a genetic engineering tool for editing genomes [1,7]. The process relies on two main components: a synthetic guide RNA (gRNA) and the Cas9 enzyme [1,6]. The guide RNA is designed to match a specific target DNA sequence and directs the Cas9 protein to that exact location in the genome [1,5,7]. Once positioned, Cas9 acts as molecular "scissors," cutting the DNA at the targeted site [6,7]. This break in the DNA allows the cell's own repair machinery to remove or add genetic material, enabling scientists to knock out genes, correct mutations, or insert new sequences [1]. For more advanced applications, such as precise gene tagging, researchers can enhance editing efficiency using techniques like antibiotic resistance-based selection to improve homology-directed repair (HDR) outcomes [2].
+
+References:
+  [1] (wikipedia) CRISPR gene editing
+      https://en.wikipedia.org/wiki/CRISPR_gene_editing
+  [2] (arxiv) Fast Antibiotic resistance-Based gene editing of mammalian cells with CRISPR-Cas9 (FAB-CRISPR)
+      http://arxiv.org/abs/2502.12675v1
+  [5] (web) How does CRISPR-Cas9 work in gene editing?
+      https://synapse.patsnap.com/article/how-does-crispr-cas9-work-in-gene-editing
+  [6] (web) CRISPR Cas9 Gene Editing: Benefits and Uses
+      https://blog.biobide.com/crispr-cas9-gene-editing-benefits-and-uses
+  [7] (web) What is CRISPR gene editing, and how does it work?
+      https://theconversation.com/what-is-crispr-gene-editing-and-how-does-it-work-84591
+
+(timing: wikipedia=0.43s, arxiv=0.40s, web=3.86s; * = cache hit)
+```
+
+## Run 2 -- warm cache
+```
+2026-09-18 23:17:21,376 INFO     researcher.concurrency.orchestrator: cache hit origin=wikipedia elapsed=0.0169s
+2026-09-18 23:17:21,378 INFO     researcher.concurrency.orchestrator: cache hit origin=arxiv elapsed=0.0176s
+2026-09-18 23:17:21,383 INFO     researcher.concurrency.orchestrator: cache hit origin=web elapsed=0.0224s
+2026-09-18 23:17:27,855 INFO     httpx2: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-09-18 23:17:27,918 INFO     researcher.services.ai_service: synthesize question='How does CRISPR-Cas9 gene editing work?' n_sources=7 elapsed=6.535s
+Q: How does CRISPR-Cas9 gene editing work?
+
+A: CRISPR-Cas9 is adapted from a bacterial antiviral defense system, originally used by bacteria to cut up the DNA of invading viruses [1,7]. In gene editing applications, scientists design a synthetic guide RNA (gRNA) that is complexed with the Cas9 nuclease enzyme and delivered into a cell [1,5]. The guide RNA directs the Cas9 "scissors" to a matching target segment of DNA by searching along the genome until it finds the correct location [7]. Once positioned, Cas9 cuts the DNA at that specific site, while the RNA component helps target this cutting process [1,6]. This precise cut allows existing genes to be removed or disrupted, or—when combined with a donor DNA template—new genetic sequences to be inserted via homology-directed repair (HDR), enabling applications such as protein tagging in human cells [1,2]. Overall, this two-molecule system (Cas9 enzyme plus guide RNA) gives researchers a programmable way to alter DNA sequences and modify gene function [5,6].
+
+References:
+  [1] (wikipedia) CRISPR gene editing
+      https://en.wikipedia.org/wiki/CRISPR_gene_editing
+  [2] (arxiv) Fast Antibiotic resistance-Based gene editing of mammalian cells with CRISPR-Cas9 (FAB-CRISPR)
+      http://arxiv.org/abs/2502.12675v1
+  [5] (web) How does CRISPR-Cas9 work in gene editing?
+      https://synapse.patsnap.com/article/how-does-crispr-cas9-work-in-gene-editing
+  [6] (web) CRISPR Cas9 Gene Editing: Benefits and Uses
+      https://blog.biobide.com/crispr-cas9-gene-editing-benefits-and-uses
+  [7] (web) What is CRISPR gene editing, and how does it work?
+      https://theconversation.com/what-is-crispr-gene-editing-and-how-does-it-work-84591
+
+(timing: wikipedia=0.02s*, arxiv=0.02s*, web=0.02s*; * = cache hit)
+```

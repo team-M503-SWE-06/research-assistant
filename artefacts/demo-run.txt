@@ -1,0 +1,120 @@
+2026-09-18 23:15:42,256 INFO     researcher.services.ai_service: fetch origin=wikipedia query='photosynthesis stages' results=0 elapsed=0.283s
+2026-09-18 23:15:42,410 INFO     researcher.services.ai_service: fetch origin=arxiv query='What is photosynthesis and what are its main stages?' results=3 elapsed=0.401s
+2026-09-18 23:15:42,565 INFO     researcher.services.ai_service: fetch origin=wikipedia query='photosynthesis' results=3 elapsed=0.309s
+2026-09-18 23:15:42,565 INFO     researcher.services.ai_service: wikipedia match question='What is photosynthesis and what are its main stages?' term='photosynthesis' attempt=2/3
+2026-09-18 23:15:43,930 INFO     researcher.services.ai_service: fetch origin=web query='What is photosynthesis and what are its main stages?' results=3 elapsed=1.921s
+2026-09-18 23:15:49,334 INFO     httpx2: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-09-18 23:15:49,349 INFO     researcher.services.ai_service: synthesize question='What is photosynthesis and what are its main stages?' n_sources=9 elapsed=5.415s
+2026-09-18 23:15:49,736 INFO     researcher.services.ai_service: fetch origin=arxiv query='How do transformer-based language models handle long context windows?' results=3 elapsed=0.386s
+2026-09-18 23:15:49,909 INFO     researcher.services.ai_service: fetch origin=wikipedia query='transformer-based language models' results=0 elapsed=0.559s
+2026-09-18 23:15:50,383 INFO     researcher.services.ai_service: fetch origin=wikipedia query='language models long' results=1 elapsed=0.474s
+2026-09-18 23:15:50,383 INFO     researcher.services.ai_service: wikipedia match question='How do transformer-based language models handle long context windows?' term='language models long' attempt=2/8
+2026-09-18 23:15:50,907 INFO     researcher.services.ai_service: fetch origin=web query='How do transformer-based language models handle long context windows?' results=3 elapsed=1.556s
+2026-09-18 23:15:55,666 INFO     httpx2: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-09-18 23:15:55,667 INFO     researcher.services.ai_service: synthesize question='How do transformer-based language models handle long context windows?' n_sources=7 elapsed=4.759s
+2026-09-18 23:15:56,067 INFO     researcher.services.ai_service: fetch origin=arxiv query='What were the main causes of the 2008 financial crisis?' results=3 elapsed=0.399s
+2026-09-18 23:15:56,097 INFO     researcher.services.ai_service: fetch origin=wikipedia query='causes 2008 financial' results=0 elapsed=0.430s
+2026-09-18 23:15:56,889 INFO     researcher.services.ai_service: fetch origin=wikipedia query='2008 financial crisis' results=3 elapsed=0.791s
+2026-09-18 23:15:56,889 INFO     researcher.services.ai_service: wikipedia match question='What were the main causes of the 2008 financial crisis?' term='2008 financial crisis' attempt=2/8
+2026-09-18 23:15:57,510 INFO     researcher.services.ai_service: fetch origin=web query='What were the main causes of the 2008 financial crisis?' results=3 elapsed=1.842s
+2026-09-18 23:16:01,821 INFO     httpx2: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-09-18 23:16:01,822 INFO     researcher.services.ai_service: synthesize question='What were the main causes of the 2008 financial crisis?' n_sources=9 elapsed=4.311s
+2026-09-18 23:16:02,096 INFO     researcher.services.ai_service: fetch origin=wikipedia query='fusion energy research' results=0 elapsed=0.274s
+2026-09-18 23:16:02,192 INFO     researcher.services.ai_service: fetch origin=arxiv query='What is the current state of fusion energy research?' results=3 elapsed=0.370s
+2026-09-18 23:16:02,962 INFO     researcher.services.ai_service: fetch origin=wikipedia query='fusion energy' results=3 elapsed=0.866s
+2026-09-18 23:16:02,962 INFO     researcher.services.ai_service: wikipedia match question='What is the current state of fusion energy research?' term='fusion energy' attempt=2/6
+2026-09-18 23:16:05,180 INFO     researcher.services.ai_service: fetch origin=web query='What is the current state of fusion energy research?' results=3 elapsed=3.357s
+2026-09-18 23:16:11,038 INFO     httpx2: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-09-18 23:16:11,039 INFO     researcher.services.ai_service: synthesize question='What is the current state of fusion energy research?' n_sources=9 elapsed=5.859s
+2026-09-18 23:16:11,385 INFO     researcher.services.ai_service: fetch origin=wikipedia query='CRISPR-Cas9 gene editing' results=1 elapsed=0.346s
+2026-09-18 23:16:11,385 INFO     researcher.services.ai_service: wikipedia match question='How does CRISPR-Cas9 gene editing work at a molecular level?' term='CRISPR-Cas9 gene editing' attempt=1/6
+2026-09-18 23:16:11,698 INFO     researcher.services.ai_service: fetch origin=arxiv query='How does CRISPR-Cas9 gene editing work at a molecular level?' results=3 elapsed=0.658s
+2026-09-18 23:16:13,156 INFO     researcher.services.ai_service: fetch origin=web query='How does CRISPR-Cas9 gene editing work at a molecular level?' results=3 elapsed=2.116s
+2026-09-18 23:16:17,919 INFO     httpx2: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-09-18 23:16:17,919 INFO     researcher.services.ai_service: synthesize question='How does CRISPR-Cas9 gene editing work at a molecular level?' n_sources=7 elapsed=4.763s
+Q: What is photosynthesis and what are its main stages?
+
+A: Photosynthesis is a biological process in which photopigment-bearing autotrophic organisms, such as plants, algae, and cyanobacteria, convert light energy (typically from sunlight) into chemical energy that fuels their metabolism, storing this energy in organic compounds like sugars and starches [1]. This is often summarized by the simplified chemical reaction in which water and carbon dioxide, using light energy, are converted into glucose and oxygen [2]. The process generally occurs in two major stages: light-dependent reactions and light-independent reactions [7,8]. In the light-dependent stage, which takes place in the thylakoid membrane, chlorophyll absorbs light energy and converts it into chemical energy in the form of ATP and NADPH [7,9]. In the light-independent stage, also known as the Calvin cycle, which occurs in the stroma, these energy carriers (ATP and NADPH) are used to fix and reduce carbon dioxide into sugars, with carbon dioxide combining with ribulose 1,5-bisphosphate as part of this process [7,8].
+
+References:
+  [1] (wikipedia) Photosynthesis
+      https://en.wikipedia.org/wiki/Photosynthesis
+  [2] (wikipedia) Photosynthetic efficiency
+      https://en.wikipedia.org/wiki/Photosynthetic_efficiency
+  [7] (web) Photosynthesis
+      https://education.nationalgeographic.org/resource/photosynthesis
+  [8] (web) Photosynthesis
+      https://en.wikipedia.org/wiki/Photosynthesis
+  [9] (web) Stages of photosynthesis - Revise
+      https://www.bbc.co.uk/bitesize/guides/zcktw6f/revision/3
+
+(timing: wikipedia=0.59s, arxiv=0.40s, web=1.93s; * = cache hit)
+
+Q: How do transformer-based language models handle long context windows?
+
+A: Transformer-based language models rely on attention, which compares each new token to every previous token in the context, allowing the model to "remember" all prior tokens—but this also makes computation less efficient as context length grows [5]. In principle, the context window can be extended as large as memory allows, though longer sequences increase computational cost and slow the model down, and performance may suffer if the model wasn't trained on similarly long sequences [7]. Even models with large context windows are not guaranteed to effectively utilize all the information provided within that window [7]. To address these challenges, researchers have pursued architectural advances directly modifying the attention mechanism, as well as simpler black-box or gray-box approaches that make multiple calls to a model to respect its maximum length limit, leveraging in-context learning without altering the model's inherent long-context capabilities [6]. Over the past two years, context lengths in LLMs have been extended dramatically, reaching millions of tokens, with research also expanding beyond simple length extrapolation to explore broader aspects of long-context processing [4].
+
+References:
+  [4] (arxiv) Thus Spake Long-Context Large Language Model
+      http://arxiv.org/abs/2502.17129v2
+  [5] (web) Why large language models struggle with long contexts
+      https://www.understandingai.org/p/why-large-language-models-struggle
+  [6] (web) Advancing Transformer Architecture in Long-Context Large ...
+      https://arxiv.org/html/2311.12351v2
+  [7] (web) Understanding Context Windows for Transformer Models
+      https://towardsdatascience.com/de-coded-understanding-context-windows-for-transformer-models-cd1baca6427e
+
+(timing: wikipedia=1.03s, arxiv=0.39s, web=1.56s; * = cache hit)
+
+Q: What were the main causes of the 2008 financial crisis?
+
+A: The 2008 financial crisis was primarily rooted in the 2000s U.S. housing bubble, driven by excessive speculation on property values by both homeowners and financial institutions [1,7]. This was worsened by predatory lending practices, particularly the widespread issuance of subprime mortgages to borrowers with poor credit, and by significant deficiencies in financial regulation [1,7,9]. The boom in housing was characterized by loose credit standards, rampant speculation, and general market exuberance [9]. When mortgage-backed securities tied to these risky loans collapsed in value, major financial institutions failed, credit markets froze, and stock markets crashed sharply in September 2008 [8]. Some economists, particularly from the Austrian school, also attribute the crisis to the Federal Reserve's prolonged policy of artificially low interest rates, which they argue fueled a credit bubble and widespread malinvestment, compounded by moral hazard [1,7].
+
+References:
+  [1] (wikipedia) 2008 financial crisis
+      https://en.wikipedia.org/wiki/2008_financial_crisis
+  [7] (web) 2008 financial crisis
+      https://en.wikipedia.org/wiki/2008_financial_crisis
+  [8] (web) What Caused the Great Recession of 2008? Explained
+      https://www.acorns.com/learn/investing/what-caused-great-recession-of-2008
+  [9] (web) Origins of the Crisis
+      https://www.fdic.gov/media/18636
+
+(timing: wikipedia=1.22s, arxiv=0.40s, web=1.84s; * = cache hit)
+
+Q: What is the current state of fusion energy research?
+
+A: Fusion power research aims to generate electricity from nuclear fusion reactions, where light nuclei combine to release energy, though this remains a potential rather than fully realized method of power generation [1]. A key metric for progress is the fusion energy gain factor (Q), with "breakeven" (Q=1) marking the point where fusion power output equals the heating power required to sustain the plasma [2]. Recent milestones include the National Ignition Facility's laser-based experiments achieving scientific net energy gain in 2022 and continuing to set new fusion yield records since [9]. Progress has also been driven by advances in superconducting magnet technology at institutions like MIT and by government-funded programs such as ARPA-E's ALPHA initiative, which supported lower-cost approaches like magneto-inertial fusion and Z-pinch variants [4,9]. While commercial fusion power is not yet on the grid, ongoing research has already yielded real-world benefits in materials science and industrial processes, and growing private-sector investment—alongside advances in high-temperature superconducting magnets—suggests commercial fusion may be closer than ever, though sustained net energy gain at commercial scale remains a challenge [7,8,9].
+
+References:
+  [1] (wikipedia) Fusion power
+      https://en.wikipedia.org/wiki/Fusion_power
+  [2] (wikipedia) Fusion energy gain factor
+      https://en.wikipedia.org/wiki/Fusion_energy_gain_factor
+  [4] (arxiv) Retrospective of the ARPA-E ALPHA fusion program
+      http://arxiv.org/abs/1907.09921v2
+  [7] (web) State of Fusion Energy: 2026 Report
+      https://grandpasai.com/research/state-of-fusion-energy-2026.html
+  [8] (web) Fusion energy: Pathway to abundant power
+      https://www.nsf.gov/science-matters/fusion-energy-pathway-abundant-power
+  [9] (web) Bringing Fusion Energy to the Grid: Challenges and Pathways
+      https://kleinmanenergy.upenn.edu/research/publications/bringing-fusion-energy-to-the-grid-challenges-and-pathways
+
+(timing: wikipedia=1.14s, arxiv=0.37s, web=3.36s; * = cache hit)
+
+Q: How does CRISPR-Cas9 gene editing work at a molecular level?
+
+A: CRISPR-Cas9 is derived from a bacterial antiviral defense system that has been adapted into a genetic engineering tool [1,6]. The system consists of two main components: the Cas9 enzyme, which acts as "molecular scissors," and a guide RNA that directs it to a specific target [6]. In the lab, the natural crRNA and tracrRNA molecules are combined into a single synthetic guide RNA (sgRNA) that pairs with Cas9 [1,5]. Once inside the cell nucleus, this Cas9–guide RNA complex locates a short sequence called the PAM, after which Cas9 unzips the DNA and checks whether it matches the guide RNA sequence [7]. If the sequence matches, Cas9 uses its two nuclease domains to cut both strands of the DNA at that precise location [6,7]. This creates a double-strand break that triggers the cell's natural DNA repair processes, which can be harnessed to remove, disrupt, or insert genetic material at the target site [1,6].
+
+References:
+  [1] (wikipedia) CRISPR gene editing
+      https://en.wikipedia.org/wiki/CRISPR_gene_editing
+  [5] (web) What is CRISPR-Cas9 and how does it work? - INTEGRA Biosciences
+      https://www.integra-biosciences.com/united-states/en/blog/article/what-crispr-cas9-and-how-does-it-work
+  [6] (web) Gene Editing
+      https://crisprtx.com/gene-editing
+  [7] (web) Genome Editing with CRISPR-Cas9 - YouTube
+      https://www.youtube.com/watch?v=2pp17E4E-O8
+
+(timing: wikipedia=0.35s, arxiv=0.66s, web=2.12s; * = cache hit)
+
