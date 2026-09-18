@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
-from ai.schemas import AnswerWithCitations, Citation, Source
 import researcher.cli as cli_module
+from ai.schemas import AnswerWithCitations, Citation, Source
 from researcher.core.errors import InvalidQuestionError
 from researcher.models import ResearchSession, SourceOutcome
 
