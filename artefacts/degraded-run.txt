@@ -1,0 +1,29 @@
+# Graceful degradation
+
+The web-search provider is given an invalid API key for this run only.
+No code is modified. The other two sources still answer, the failure is
+reported per-source, and the answer carries a 'Note: ... unavailable' line.
+
+```
+2026-09-18 23:18:53,706 INFO     researcher.services.ai_service: fetch origin=wikipedia query='CRISPR-Cas9 gene editing' results=1 elapsed=0.368s
+2026-09-18 23:18:53,706 INFO     researcher.services.ai_service: wikipedia match question='How does CRISPR-Cas9 gene editing work?' term='CRISPR-Cas9 gene editing' attempt=1/6
+2026-09-18 23:18:53,742 INFO     researcher.services.ai_service: fetch origin=arxiv query='How does CRISPR-Cas9 gene editing work?' results=3 elapsed=0.377s
+2026-09-18 23:19:03,147 INFO     httpx2: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-09-18 23:19:03,220 INFO     researcher.services.ai_service: synthesize question='How does CRISPR-Cas9 gene editing work?' n_sources=4 elapsed=7.554s
+Q: How does CRISPR-Cas9 gene editing work?
+
+A: CRISPR-Cas9 is a genetic engineering technique derived from a bacterial antiviral defense system, adapted for use in editing genomes of living organisms [1]. It works by delivering the Cas9 nuclease complexed with a synthetic guide RNA (gRNA) into a cell, which directs Cas9 to cut the genome at a specific, targeted location [1]. This cut allows existing genes to be removed or new genetic material to be added in vivo [1]. For precise edits such as protein tagging, homology-directed repair (HDR) donor constructs can be introduced alongside Cas9, though HDR efficiency is often low, resulting in low knock-in rates; strategies like antibiotic resistance-based selection have been developed to improve the identification of successfully edited cells [2].
+
+The provided sources do not offer further mechanistic detail (e.g., on gRNA design, PAM sequences, or DNA repair pathway choice) beyond this general description [1,2].
+
+Note: web unavailable (Tavily search failed: Client error '401 Unauthorized' for url 'https://api.tavily.com/search'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401)
+
+References:
+  [1] (wikipedia) CRISPR gene editing
+      https://en.wikipedia.org/wiki/CRISPR_gene_editing
+  [2] (arxiv) Fast Antibiotic resistance-Based gene editing of mammalian cells with CRISPR-Cas9 (FAB-CRISPR)
+      http://arxiv.org/abs/2502.12675v1
+
+(timing: wikipedia=0.37s, arxiv=0.38s, web=0.00s; * = cache hit)
+```
