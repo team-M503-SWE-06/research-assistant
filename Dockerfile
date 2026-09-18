@@ -1,4 +1,9 @@
 # Async Research Assistant (Topic 4) — CLI-driven project, no HTTP server.
+#
+# Platform: the image is built from source (pip wheels only, no arch-specific
+# system libraries), so a plain `docker build .` produces a working image on
+# both amd64 and arm64. For a byte-reproducible image matching CI, build with:
+#   docker buildx build --platform linux/amd64 -t research-assistant .
 FROM python:3.12-slim
 
 LABEL org.opencontainers.image.title="Async Research Assistant (Topic 4)"

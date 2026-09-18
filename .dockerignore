@@ -11,3 +11,11 @@ __pycache__/
 htmlcov/
 .idea/
 .vscode/
+
+# Captured run output and the report/slides: committed to the repo, but the
+# image has no use for them and they only bloat the build context.
+artefacts/
+report/
+slides/
+out/
+*.pdf

@@ -10,7 +10,10 @@ import hashlib
 import re
 import time
 
+from pydantic import ValidationError
+
 from ai.schemas import Source
+from researcher.models import CacheEntry
 from researcher.storage.cache_store import CacheBackend
 
 
@@ -36,16 +39,23 @@ class SourceCache:
         payload = await self._backend.read(cache_key(source, query))
         if payload is None:
             return None
-        if time.time() > payload["expires_at"]:
+        try:
+            entry = CacheEntry.model_validate(payload)
+        except ValidationError:
+            # A payload written by an older, incompatible version is a miss,
+            # not a crash -- same treatment as a corrupted file.
+            return None
+        if entry.is_expired:
             return None  # stale entry -> treated as a miss (lazy expiry, no sweeper)
-        return [Source.model_validate(d) for d in payload["sources"]]
+        return list(entry.sources)
 
     async def set(self, source: str, query: str, sources: list[Source]) -> None:
-        payload = {
-            "source": source,
-            "query": canonicalize_query(query),
-            "cached_at": time.time(),
-            "expires_at": time.time() + self._ttl,
-            "sources": [s.model_dump() for s in sources],
-        }
-        await self._backend.write(cache_key(source, query), payload)
+        now = time.time()
+        entry = CacheEntry(
+            source=source,
+            query=canonicalize_query(query),
+            cached_at=now,
+            expires_at=now + self._ttl,
+            sources=sources,
+        )
+        await self._backend.write(cache_key(source, query), entry.model_dump(mode="json"))
