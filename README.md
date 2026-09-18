@@ -110,12 +110,43 @@ python scripts/bench.py --limit 5
 
 | Workload | N | Sequential | Concurrent | Speedup |
 |---|---|---|---|---|
-| 5 sample research questions (run 2, all sources healthy) | 5 | 46.8s | 11.7s | 4.0x |
-| 5 sample research questions (run 1, one arXiv 10 s timeout in the sequential phase) | 5 | 71.6s | 11.8s | 6.1x |
+| 5 sample research questions | 5 | 31.4s | 8.8s | **3.6x** |
 
-`scripts/bench.py` runs the same N questions once with a plain `for` loop and once via `asyncio.gather`, both with `--no-cache` semantics so the numbers reflect real fetch/synthesis concurrency, not cache hits. Measured 2026-09-12 against this codebase (the figures predate the move to this repository; the measured code is unchanged) on a Windows 11 laptop with Python 3.14.3, `LLM_MODEL=claude-opus-5` and Tavily web search. Synthesis is ~91% of the sequential time, so the concurrent run is bounded by the slowest single question (~1–2 s of fetches plus ~10 s of LLM), not by the semaphore. Running `python -m researcher demo` twice gave 0/15 source-cache hits on the first pass and 15/15 on the second.
+Measured 2026-09-18 on a Windows 11 laptop with Python 3.14.3,
+`LLM_MODEL=claude-opus-5` and Tavily web search. The full log of that run is committed at
+[`artefacts/bench.md`](artefacts/bench.md), so these figures can be checked rather than
+taken on trust.
 
-**Expected bottleneck:** each `ask` call fans out 3 I/O-bound fetches (Wikipedia, arXiv, web search) concurrently via `asyncio.gather`, so a single call's wall time is bounded by the *slowest* of the three, not their sum — `researcher/concurrency/orchestrator.py` and `tests/test_orchestrator.py::test_sources_fetched_in_parallel_not_sequentially` demonstrate this at the unit level with staggered fake delays. Running multiple `ask` calls concurrently (as the benchmark does) additionally amortizes each call's fixed overhead (LLM synthesis latency, connection setup) across the batch; the `MAX_CONCURRENT_FETCHES` semaphore caps how much of that can happen in parallel before the LLM provider's own rate limits become the bottleneck.
+`scripts/bench.py` runs the same N questions once with a plain `for` loop and once via
+`asyncio.gather`, both with caching disabled, so the numbers reflect real fetch and
+synthesis concurrency rather than cache hits.
+
+**Where the time goes.** LLM synthesis dominates. In the sequential phase the five
+`synthesize` calls account for **24.6s of the 31.4s** wall time — 78% of it. Source
+fetches are comparatively cheap: Wikipedia and arXiv return in 0.2-0.4s, web search in
+0.96-1.85s. The speedup therefore comes almost entirely from overlapping synthesis across
+questions, and the concurrent wall time is bounded by the slowest single question rather
+than by the semaphore.
+
+**What caps it.** Web-search latency degrades under concurrency, from 0.96-1.85s
+sequentially to **1.34-3.95s** with all five questions in flight. The search provider, not
+our semaphore, is the first thing to push back; `MAX_CONCURRENT_FETCHES` is what keeps
+that in hand. Raising it further trades politeness for a diminishing return, since
+synthesis is already the long pole.
+
+Within a single `ask`, the three fetches run concurrently via `asyncio.gather`, so one
+call's wall time is bounded by the slowest of the three rather than their sum.
+`tests/test_orchestrator.py::test_sources_fetched_in_parallel_not_sequentially` asserts
+exactly that at the unit level, with staggered fake delays.
+
+**Caching.** [`artefacts/cache-hit.txt`](artefacts/cache-hit.txt) records the same question
+asked twice: `wikipedia=0.43s, arxiv=0.40s, web=3.86s` on a cold cache, then
+`wikipedia=0.02s*, arxiv=0.02s*, web=0.02s*` on the second run, where `*` marks a hit.
+
+**Degradation.** [`artefacts/degraded-run.txt`](artefacts/degraded-run.txt) is a run with a
+deliberately invalid web-search key. Wikipedia and arXiv still answer, the web source is
+reported as failed, and the answer carries
+`Note: web unavailable (Tavily search failed: Client error '401 Unauthorized' ...)`.
 
 ## Testing
 
