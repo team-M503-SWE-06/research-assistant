@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import contextlib
 import json
 import sys
 from pathlib import Path
@@ -32,10 +33,9 @@ def _use_utf8_stdio() -> None:
         reconfigure = getattr(stream, "reconfigure", None)
         if reconfigure is None:
             continue
-        try:
+        # A detached or otherwise odd stream cannot be reconfigured; leave it as is.
+        with contextlib.suppress(ValueError, OSError):
             reconfigure(encoding="utf-8", errors="backslashreplace")
-        except (ValueError, OSError):  # pragma: no cover - detached/odd stream
-            pass
 
 
 def format_answer(session: ResearchSession) -> str:

@@ -7,7 +7,6 @@ import time
 import pytest
 
 from researcher.services.cache import SourceCache, cache_key, canonicalize_query
-from researcher.storage.cache_store import InMemoryCacheBackend
 
 
 def test_canonicalize_query_normalizes_case_and_whitespace():
